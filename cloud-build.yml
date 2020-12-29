@@ -1,0 +1,24 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        docker pull gcr.io/braided-potion-300104/cloud-run-demo:latest || exit 0
+  - name: gcr.io/cloud-builders/docker
+    timeout: 1200s
+    args:
+      [
+        'build',
+        '-f',
+        'Dockerfile',
+        '-t',
+        'gcr.io/braided-potion-300104/cloud-run-demo',
+        '--cache-from',
+        'gcr.io/braided-potion-300104/cloud-run-demo:latest',
+        '.',
+      ]
+timeout: 1200s
+images:
+  - gcr.io/braided-potion-300104/cloud-run-demo
+#gcloud builds submit --project "braided-potion-300104" --config=./cloud-build.yml
